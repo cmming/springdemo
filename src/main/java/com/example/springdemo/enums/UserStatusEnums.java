@@ -19,4 +19,11 @@ public enum UserStatusEnums {
         this.statusCode = statusCode;
         this.statusName = statusNameString;
     }
+
+    public static String getValue(Integer code) {
+        for (UserStatusEnums ele : values()) {
+            if(ele.getStatusCode().equals(code)) return ele.getStatusName();
+        }
+        return null;
+    }
 }

@@ -25,7 +25,8 @@ public class MiscUtil {
         Map<String,String> fieldErrors = new HashMap<String, String>();
 
         for(FieldError error : bindingResult.getFieldErrors()){
-            fieldErrors.put(error.getField(), error.getCode() + "|" + error.getDefaultMessage());
+//            fieldErrors.put(error.getField(), error.getCode() + "|" + error.getDefaultMessage());
+            fieldErrors.put(error.getField(), error.getDefaultMessage());
         }
 
 //        Result ret = new Result(422, "输入错误"); //rfc4918 - 11.2. 422: Unprocessable Entity

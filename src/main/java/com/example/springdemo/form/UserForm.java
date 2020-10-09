@@ -1,11 +1,12 @@
 package com.example.springdemo.form;
 
+import com.example.springdemo.utils.deserializer.UserNameJsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 /**
  * @Author: chenming
@@ -15,7 +16,12 @@ import javax.validation.constraints.Pattern;
 @Data
 public class UserForm {
 
+    /**
+     * TODO 请求数据转换会在NotBlank之前、在NotNull之后，不知道为什么
+     */
+    @JsonDeserialize(using = UserNameJsonDeserializer.class)
     @NotNull(message="名称必须填")
+    @NotBlank(message="名称不能为空")
     private String name;
 
     @NotNull(message="年龄必须填")
