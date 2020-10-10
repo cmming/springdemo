@@ -10,6 +10,8 @@ public enum ResultEnum {
     UNKNOW_ERROR(-1, "位置错误"),
     SCCESS(0, "成功"),
 
+    USER_NOT_FOUND(400001, "用户不存在"),
+
     NOT_FOUND(404000, "接口不存在"),
 
     // 参数异常已422 开头

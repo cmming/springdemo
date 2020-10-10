@@ -12,9 +12,9 @@ import java.io.IOException;
  * @Description: 转换响应的数据格式：将用户状态转换为汉字 .
  * @Date: Create in 14:41 2020-10-09
  **/
-public class UserStatusCode2StatusNameSerializer extends JsonSerializer<Integer> {
+public class UserStatusCode2StatusNameSerializer extends JsonSerializer<String> {
     @Override
-    public void serialize(Integer integer, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        jsonGenerator.writeString(UserStatusEnums.getValue(integer));
+    public void serialize(String s, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        jsonGenerator.writeString(UserStatusEnums.getValue(s));
     }
 }
