@@ -9,7 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -86,6 +88,42 @@ public class RedisTest {
         System.out.println(redisTemplate.opsForHash().get("map1", "name"));
         System.out.println(redisTemplate.opsForHash().get("map1", "age"));
         System.out.println("-----redis hash测试-----");
+    }
+
+    @Test
+    public void putSameKeyToMap() {
+        Map<String, User> map1 = new HashMap<>();
+        User user1 = new User();
+        user1.setAge(1);
+        user1.setName("chmi1");
+        map1.put("1", user1);
+
+        User user2 = new User();
+        user2.setAge(2);
+        user2.setName("chmi2");
+        map1.put("2", user2);
+
+        map1.forEach((k, v) -> {
+            if (k.equals("2")) {
+                v.setName("chmi3");
+            }
+        });
+
+        List<User> l1 = new ArrayList<>();
+        l1.add(user1);
+        l1.add(user2);
+
+        l1.forEach((v) -> {
+            v.setName("add" + v.getName());
+            return;
+        });
+//        for (User u : l1) {
+//            u.setName("add-" + u.getName());
+//            break;
+//        }
+
+        System.out.println(map1);
+        System.out.println(l1);
     }
 }
 
