@@ -6,7 +6,9 @@ import com.example.springdemo.enums.ResultEnum;
 import com.example.springdemo.form.UpdateUserForm;
 import com.example.springdemo.form.UserForm;
 import com.example.springdemo.repository.UserRepository;
+import com.example.springdemo.utils.JsonUtils;
 import com.example.springdemo.utils.ResultVOUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -18,12 +20,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/user")
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -43,6 +44,7 @@ public class UserController {
         // Pageable pageable
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<User> result = userRepository.findAll(pageable);
+        log.info("用户列表信息：{}", JsonUtils.toJson(result));
         return ResultVOUtil.success(result);
     }
 
