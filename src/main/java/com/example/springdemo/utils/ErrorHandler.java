@@ -2,6 +2,7 @@ package com.example.springdemo.utils;
 
 import com.example.springdemo.VO.ResultVO;
 import com.example.springdemo.enums.ResultEnum;
+import com.example.springdemo.exception.DemoException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,14 +48,14 @@ public class ErrorHandler {
      * # 禁用静态资源的自动映射，如不禁用不存在的url将被映射到，servlet不有机会抛出异常（会导致静态资源不可用）
      * #spring.resources.add-mappings=false
      */
-//    @ExceptionHandler(value = NoHandlerFoundException.class)
-//    public ResponseEntity<ResultVO> NoHandlerFoundExceptionHandler(HttpServletRequest req, Exception e) throws Exception {
-//
-//        log.debug("异常详情", e);
-//
-//        ResultVO res = ResultVOUtil.error(ResultEnum.NOT_FOUND);
-//        return new ResponseEntity<ResultVO>(res, HttpStatus.NOT_FOUND);
-//    }
+    @ExceptionHandler(value = NoHandlerFoundException.class)
+    public ResponseEntity<ResultVO> NoHandlerFoundExceptionHandler(HttpServletRequest req, Exception e) throws Exception {
+
+        log.debug("异常详情", e);
+
+        ResultVO res = ResultVOUtil.error(ResultEnum.NOT_FOUND);
+        return new ResponseEntity<ResultVO>(res, HttpStatus.NOT_FOUND);
+    }
 
     /**
      *  默认异常处理，前面未处理
@@ -67,4 +68,17 @@ public class ErrorHandler {
 //
 //        return new ResponseEntity<ResultVO>(res, HttpStatus.INTERNAL_SERVER_ERROR);
 //    }
+
+    /**
+     * 统一捕获自定义异常 .
+     * @param req 请求
+     * @param e 异常
+     * @return 错误消息
+     */
+    @ExceptionHandler(value = DemoException.class)
+    public ResponseEntity<ResultVO> demoException(HttpServletRequest req, DemoException e) throws Exception {
+        log.info("自定义异常demoException，code:{},msg:{}", e.getCode(), e.getMsg());
+        ResultVO res = ResultVOUtil.error(e.getCode(), e.getMsg());
+        return new ResponseEntity(res, HttpStatus.BAD_REQUEST);
+    }
 }

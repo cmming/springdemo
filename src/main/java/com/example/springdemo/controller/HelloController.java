@@ -2,6 +2,8 @@ package com.example.springdemo.controller;
 
 import com.example.springdemo.VO.ResultVO;
 import com.example.springdemo.VO.TestVO;
+import com.example.springdemo.enums.ResultEnum;
+import com.example.springdemo.exception.DemoException;
 import com.example.springdemo.utils.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -34,5 +36,11 @@ public class HelloController {
     @GetMapping("/redis")
     public void testRedis(){
         redisTemplate.opsForValue().set("redisTest","redisTest");
+    }
+
+    @GetMapping("/testDemoException")
+    public ResultVO testDemoException() {
+        DemoException demoException = new DemoException(ResultEnum.NOT_FOUND.getCode(), ResultEnum.NOT_FOUND.getMessage());
+        throw demoException;
     }
 }
