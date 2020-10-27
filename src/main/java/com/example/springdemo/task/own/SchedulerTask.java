@@ -25,6 +25,9 @@ public class SchedulerTask {
     }
 
 
+    /**
+     * 从0秒开始每5秒运行一次
+     */
     @Scheduled(cron = "0/5 * * * * ?")
     private void reportTimeCron () {
         System.out.println("cron表到式输出时间：" + simpleDateFormat.format(new Date()));
