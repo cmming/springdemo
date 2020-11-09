@@ -16,6 +16,8 @@ public enum ResultEnum {
 
     // 参数异常已422 开头
     PARAMS_ERR0R(422000, "参数错误"),
+    // 422001
+    PARAMS_CONTAIN_SPECIAL_SINGLE(422001, "参数包含特殊字符"),
 
     // 服务器异常已500 开头
     SERVER_ERR0R(500000, "服务器异常"),

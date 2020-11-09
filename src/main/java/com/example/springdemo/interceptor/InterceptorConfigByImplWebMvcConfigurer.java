@@ -23,6 +23,11 @@ public class InterceptorConfigByImplWebMvcConfigurer implements WebMvcConfigurer
         return new CorsInterceptor();
     }
 
+    @Bean
+    public SpecialSingleInterceptor specialSingleInterceptor() {
+        return  new SpecialSingleInterceptor();
+    }
+
     /**
      * 将拦截器注册到spring的上下文中 .
      * @param registry
@@ -31,5 +36,6 @@ public class InterceptorConfigByImplWebMvcConfigurer implements WebMvcConfigurer
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(corsInterceptor()).addPathPatterns("/**").excludePathPatterns("/*.html");
         registry.addInterceptor(loginInterceptor()).addPathPatterns("/**").excludePathPatterns("/*.html");
+        registry.addInterceptor(specialSingleInterceptor()).addPathPatterns("/**").excludePathPatterns("/*.html");
     }
 }

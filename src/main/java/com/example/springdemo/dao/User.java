@@ -32,6 +32,17 @@ public class User implements Serializable {
     /**
      * 用户状态 默认正常 .
      */
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", password='" + password + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
     /**
      * 响应数据格式转换(为了表面redis序列化由于值类型发生变化导致序列化异常，所以讲状态改为字符串)
      * TODO 或者有其他方式优化

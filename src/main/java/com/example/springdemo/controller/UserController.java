@@ -1,6 +1,7 @@
 package com.example.springdemo.controller;
 
 import com.example.springdemo.VO.ResultVO;
+import com.example.springdemo.annotation.AuditLog;
 import com.example.springdemo.dao.User;
 import com.example.springdemo.enums.ResultEnum;
 import com.example.springdemo.form.UpdateUserForm;
@@ -39,6 +40,7 @@ public class UserController {
      */
     // @Cacheable(value = "userPage", key = "#pageSize + #pageNum")
     @GetMapping("")
+    @AuditLog(auditItemId = "user@list", logContent = "'用戶列表信息查詢'")
     public ResultVO index(@RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                           @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         // Pageable pageable
@@ -49,6 +51,7 @@ public class UserController {
     }
 
     @PostMapping("")
+    @AuditLog(auditItemId = "user@store", logContent = "'请求的参数信息为：' + #userForm")
     public ResultVO store(@Valid @RequestBody UserForm userForm) {
         User user = new User();
         BeanUtils.copyProperties(userForm, user);
