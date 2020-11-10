@@ -1,6 +1,8 @@
 package com.example.springdemo;
 
 import com.example.springdemo.dao.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -83,6 +88,67 @@ public class CommonTest {
         BigDecimal ad = items.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
 
         System.out.println(ad);
+    }
+
+    @Test
+    public void  testJackson() {
+        User user1 = new User();
+        user1.setAge(10);
+        user1.setName("chmi1");
+        System.out.println(user1);
+
+        // 将对象序列化为为字符串
+        ObjectMapper om = new ObjectMapper();
+        String user1String = "";
+        try {
+            user1String = om.writeValueAsString(user1);
+            System.out.println(user1String);
+         }catch (JsonProcessingException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+
+        // 将字符串反序列化为对象
+        try {
+            User user1Copy = om.readValue(user1String, User.class);
+            System.out.println(user1Copy);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+
+    }
+
+    @Test
+    public void testURLEncoder() {
+        try {
+            final String urlString = URLEncoder.encode("https://www.xtest.com/?key=123*", "UTF-8");
+            System.out.println(urlString);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testCase() {
+        String str = "asdb和W";
+        System.out.println(str.toLowerCase());
+        System.out.println(str.toUpperCase());
+        try {
+            System.out.println(URLEncoder.encode(" ", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testDeleteZero(){
+        String as = "30.00";
+        System.out.println(as);
+        System.out.println(getPrettyNumber(as));
+    }
+
+    public String getPrettyNumber(String number) {
+        return BigDecimal.valueOf(Double.parseDouble(number))
+                .stripTrailingZeros().toPlainString();
     }
 }
 
