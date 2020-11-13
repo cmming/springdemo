@@ -40,7 +40,8 @@ public class UserController {
      */
     // @Cacheable(value = "userPage", key = "#pageSize + #pageNum")
     @GetMapping("")
-    @AuditLog(auditItemId = "user@list", logContent = "'用戶列表信息查詢'")
+    @AuditLog(auditItemId = "user@list", logContent = "'用戶列表信息查詢，页数为：' + #pageNum + '，条数为：' + #pageSize",
+            resultContent = "'响应值为' + #ResultVO")
     public ResultVO index(@RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                           @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         // Pageable pageable

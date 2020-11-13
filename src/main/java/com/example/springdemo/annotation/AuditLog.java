@@ -20,8 +20,14 @@ public @interface AuditLog {
     String auditItemId();
 
     /**
-     * 审计日志的内容
+     * 审计日志的内容 .
      * @return
      */
     String logContent();
+
+    /**
+     * 响应值 .
+     * @return
+     */
+    String resultContent() default "";
 }
