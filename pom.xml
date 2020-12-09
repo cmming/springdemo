@@ -126,14 +126,12 @@
             <artifactId>hutool-all</artifactId>
             <version>5.5.2</version>
         </dependency>
-        <!--restTemplate驱动-->
+      
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>4.7.2</version>
         </dependency>
-
-
     </dependencies>
 
     <build>

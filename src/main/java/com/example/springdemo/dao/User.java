@@ -6,10 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Data
@@ -30,18 +29,27 @@ public class User implements Serializable {
     private String password;
 
     /**
-     * 用户状态 默认正常 .
+     * 身份证信息（外键关联） .
+     * 级联方式
+     * 实体加载方式
+     * FetchType.LAZY：懒加载，加载一个实体时，定义懒加载的属性不会马上从数据库中加载
+     *
+     * FetchType.EAGER：急加载，加载一个实体时，定义急加载的属性会立即从数据库中加载
+     * referencedColumnName 指定外联表的取值字段，name外键的名称
+     * @JoinColumn 默认会使用user表中的主键作为外键
      */
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", password='" + password + '\'' +
-                ", status='" + status + '\'' +
-                '}';
-    }
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "id_card_num", referencedColumnName = "cardNum")
+    private IDCard idCard;
+
+    @OneToMany(cascade = { CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "user")
+    private List<Book> books;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "conuntry_user", joinColumns = {
+            @JoinColumn(name = "user_id")
+    }, inverseJoinColumns = { @JoinColumn(name = "country_id")})
+    private List<Country> countries;
 
     /**
      * 响应数据格式转换(为了表面redis序列化由于值类型发生变化导致序列化异常，所以讲状态改为字符串)
