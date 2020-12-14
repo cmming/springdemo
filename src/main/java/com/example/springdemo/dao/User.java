@@ -5,17 +5,24 @@ import com.example.springdemo.utils.serializer.UserStatusCode2StatusNameSerializ
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Data
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
@@ -57,4 +64,20 @@ public class User implements Serializable {
      */
     @JsonSerialize(using = UserStatusCode2StatusNameSerializer.class)
     private String status = UserStatusEnums.NORMAL.getStatusCode();
+
+    /**
+     * 创建时间
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_time", nullable = false, updatable = false)
+    @CreatedDate
+    private Date createTime;
+
+    /**
+     * 上次更新时间
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_update_time", nullable = false)
+    @LastModifiedDate
+    private Date lastUpdateTime;
 }

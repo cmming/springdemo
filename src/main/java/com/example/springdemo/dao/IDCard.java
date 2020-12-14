@@ -5,8 +5,12 @@ package com.example.springdemo.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 用户身份证 .
@@ -20,6 +24,7 @@ import javax.persistence.*;
  */
 @Entity
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public class IDCard {
 
     /**
@@ -37,4 +42,20 @@ public class IDCard {
     @OneToOne(mappedBy = "idCard", optional = false, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JsonIgnore
     private User user;
+
+    /**
+     * 创建时间
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_time", nullable = false, updatable = false)
+    @CreatedDate
+    private Date createTime;
+
+    /**
+     * 上次更新时间
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_update_time", nullable = false)
+    @LastModifiedDate
+    private Date lastUpdateTime;
 }

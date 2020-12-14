@@ -3,6 +3,7 @@
  */
 package com.example.springdemo.dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,5 +30,6 @@ public class Country {
     private Integer code;
 
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "countries")
+    @JsonIgnore
     private List<User> users;
 }

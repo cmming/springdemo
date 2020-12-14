@@ -35,7 +35,8 @@ public class SpecialSingleInterceptor implements HandlerInterceptor {
                 // paramString = paramString.replaceAll("\\+", "%20");
 //                String paramString = StringUtils.join(params.get(paramItemKey), "");
                 // 21个 反斜杠会有问题
-                boolean isContainSpecialSingle = Pattern.matches(".*(%2B|%20|%2F|%3F|%25|%23|%26|%3D|%27|%22|%28|%29|%2A|%2D|%3C|%3E|%5C|%5E|%3B|%3A|%21|\\*|-|>|<|&|#|\\+|\\(|\\)).*", paramString);
+                boolean isContainSpecialSingle = Pattern
+                        .matches(".*(%2B|%20|%2F|%3F|%25|%23|%26|%3D|%27|%22|%28|%29|%2A|%2D|%3C|%3E|%5C|%5E|%3B|%3A|%21|\\*|>|<|&|#|\\+|\\(|\\)).*", paramString);
                 log.error("请求参数包含特殊字符，请求参数为：{}", JsonUtils.toJson(paramString));
                 log.error("请求参数包含特殊字符，请求参数为：{}", JsonUtils.toJson(params));
                 if (isContainSpecialSingle) {

@@ -31,6 +31,9 @@ public class UserRepositoryTest {
     @Autowired
     private CountryRepository countryRepository;
 
+    @Autowired
+    private IDCardRepository idCardRepository;
+
     @Test
     public void saveOne() {
         IDCard idCard = new IDCard();
@@ -47,7 +50,7 @@ public class UserRepositoryTest {
     public void addIDCardForUser() {
         IDCard idCard = new IDCard();
         idCard.setCardNum("421126199304275112");
-        User user = userRepository.findById(12).get();
+        User user = userRepository.findById(5).get();
         user.setIdCard(idCard);
         userRepository.save(user);
     }
@@ -94,7 +97,7 @@ public class UserRepositoryTest {
      */
     @Test
     public void testDeleteOneBook() {
-        User user = userRepository.findById(12).get();
+        User user = userRepository.findById(2).get();
         List<Book> oldBooks = user.getBooks();
         List<Book> userSelect = new ArrayList<>();
         Book book1 = new Book();
@@ -168,7 +171,7 @@ public class UserRepositoryTest {
      */
     @Test
     public void setCountryForUser() {
-        User user = userRepository.findById(38).get();
+        User user = userRepository.findById(2).get();
         List<Integer> codes = new ArrayList<>();
         codes.add(86);
         codes.add(1);
