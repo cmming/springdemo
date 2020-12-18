@@ -2,6 +2,7 @@ package com.example.springdemo.dao;
 
 import com.example.springdemo.enums.UserStatusEnums;
 import com.example.springdemo.utils.serializer.UserStatusCode2StatusNameSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -68,16 +70,17 @@ public class User implements Serializable {
     /**
      * 创建时间
      */
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_time", nullable = false, updatable = false)
     @CreatedDate
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     /**
      * 上次更新时间
      */
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_update_time", nullable = false)
     @LastModifiedDate
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date lastUpdateTime;
 }
