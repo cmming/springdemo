@@ -3,6 +3,7 @@
  */
 package com.example.springdemo;
 
+import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -16,7 +17,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 类的描述 .
@@ -136,5 +140,75 @@ public class RestTemplateTest {
         // 发送post请求，并打印结果，以String类型接收响应结果JSON字符串
         String result = restTemplate.postForObject(url, request, String.class);
         System.out.println(result);
+    }
+
+    public String AZ(int num){
+        char sl = (char) (num + (int) 'a');
+        String tcMsg = "" + sl;
+        return tcMsg;
+    }
+
+//    @Test
+    public String testL1(int pageNum) {
+        // 最大只支持100
+//        int pageNum = 0;
+        String url = "https://ygjy.ismartwork.cn/cwjy/mapp/restful/training/getPracticeTopicList?pageNo="
+        + pageNum +"&pageSize=100&categoryId=42a2d159baab4f63a3f2cf40e828d539&trainingType=1";
+        HttpHeaders headers = new HttpHeaders();
+        List<String> cookies = new ArrayList<>();
+        cookies.add("ecpDataContext.tokenId=60700e43c58846a3a49eba47cfd24622; Path=/; Domain=.ygjy.ismartwork.cn; Expires=Sat, 25 Dec 2021 07:00:20 GMT;");
+        headers.put(HttpHeaders.COOKIE,cookies);
+        HttpEntity request = new HttpEntity(null, headers);
+        ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
+        JSONObject resultObj = JSONObject.fromObject(result.getBody());
+        List<JSONObject> res = (List<JSONObject>) resultObj.get("body");
+        String pageHtmlString = "";
+        for (int i = 0; i < res.size(); i++) {
+            String topicContent =  "<p>" + (pageNum*100 + i+1) + "、" + (String) res.get(i).get("topicContent") + "</p>";
+            List<JSONObject> topicOptionVos = (List<JSONObject>) res.get(i).get("topicOptionVos");
+            List<String> answer = (List<String>) res.get(i).get("lastOptionIds");
+            // 计算正确答案
+            String answerString = "正确答案是：";
+            String options = "";
+            if (topicOptionVos.size() > 0) {
+                for ( int j = 0; j < topicOptionVos.size(); j++) {
+                    Integer optionValue = (Integer) topicOptionVos.get(j).get("optionValue");
+                    if (optionValue == 1) {
+                        answerString = answerString + "<span style='color:green'>" + AZ(j) + "</span>";
+                        options += "<p style='color:red;font-size:16px;'>" + AZ(j) + topicOptionVos.get(j).get("optionContent") + "</p><br>";
+                    } else {
+                        options += "<p>" + AZ(j) + topicOptionVos.get(j).get("optionContent") + "</p><br>";
+                    }
+                }
+            } else {
+                String result2 = (String) res.get(i).get("result");
+                if (result2.equals("1")) {
+                    answerString = answerString + "<span style='color:green'>正确</span>";
+                    options += "<p style='color:red;font-size:16px;'>" + AZ(0) + "正确" + "</p><br>";
+                    options += "<p>" + AZ(1) + "错误" + "</p><br>";
+                } else {
+                    answerString = answerString + "<span style='color:green'>错误</span>";
+                    options += "<p>" + AZ(0) + "正确" + "</p><br>";
+                    options += "<p style='color:red;font-size:16px;'>" + AZ(1) + "错误" + "</p><br>";
+                }
+            }
+
+            // 一个题目
+            pageHtmlString = pageHtmlString + topicContent + answerString + options;
+        }
+        System.out.println(pageHtmlString);
+        return pageHtmlString;
+    }
+
+    // 261 bug
+    @Test
+    public void testL1Page() {
+        String result = "<style>*{padding: 0;margin: 0;}</style>";
+//        String result = "";
+        for (int i = 0; i < 5; i++) {
+            result = result + testL1(i);
+        }
+        FileWriter writer = new FileWriter("UX-L1.html");
+        writer.write(result);
     }
 }

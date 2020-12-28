@@ -34,6 +34,10 @@ public class ContextConfig {
     @Value("${restTemplate.read.timeout}")
     private int restTemplateReadTimeout;
 
+    /**
+     * 默认使用 JDK 自带的HttpURLConnection作为底层实现 .
+     * @return
+     */
     @Bean
     public ClientHttpRequestFactory simpleClientHttpRequestFactory(){
         SimpleClientHttpRequestFactory reqFactory= new SimpleClientHttpRequestFactory();
