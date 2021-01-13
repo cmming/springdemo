@@ -153,10 +153,10 @@ public class RestTemplateTest {
         // 最大只支持100
 //        int pageNum = 0;
         String url = "https://ygjy.ismartwork.cn/cwjy/mapp/restful/training/getPracticeTopicList?pageNo="
-        + pageNum +"&pageSize=100&categoryId=42a2d159baab4f63a3f2cf40e828d539&trainingType=1";
+        + pageNum +"&pageSize=100&categoryId=ad7ece8409fa49f0a63558bccd8e1380&trainingType=1";
         HttpHeaders headers = new HttpHeaders();
         List<String> cookies = new ArrayList<>();
-        cookies.add("ecpDataContext.tokenId=60700e43c58846a3a49eba47cfd24622; Path=/; Domain=.ygjy.ismartwork.cn; Expires=Sat, 25 Dec 2021 07:00:20 GMT;");
+        cookies.add("ecpDataContext.tokenId=5666d5a1f9ca42a18cd12ce334af09ee; Path=/; Domain=.ygjy.ismartwork.cn; Expires=Sat, 25 Dec 2021 07:00:20 GMT;");
         headers.put(HttpHeaders.COOKIE,cookies);
         HttpEntity request = new HttpEntity(null, headers);
         ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.GET, request, String.class);

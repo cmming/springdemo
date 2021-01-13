@@ -1,5 +1,7 @@
 package com.example.springdemo.exception;
 
+import com.example.springdemo.enums.ResultEnum;
+
 /**
  * @Author: chenming
  * @Description: 自定义异常 .
@@ -30,6 +32,12 @@ public class DemoException extends RuntimeException {
 //        super(message);
         this.code = code;
         this.msg = message;
+    }
+
+    public DemoException(ResultEnum resultEnum) {
+//        super(message);
+        this.code = resultEnum.getCode();
+        this.msg = resultEnum.getMessage();
     }
 
 }

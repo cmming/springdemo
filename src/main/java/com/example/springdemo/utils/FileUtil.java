@@ -45,6 +45,5 @@ public class FileUtil {
                 }
             }
         }
-        System.out.println(" download success");
     }
 }
