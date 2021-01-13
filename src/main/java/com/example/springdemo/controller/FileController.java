@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.activation.MimetypesFileTypeMap;
@@ -42,8 +43,8 @@ public class FileController {
     private static final int RESPONSE_SIZE = 1024;
 
     @PostMapping(value = "download")
-    public ResponseEntity<FileSystemResource> downloadFile() {
-        String filePath = "C:\\Users\\chenming3\\Downloads\\123.xlsx";
+    public ResponseEntity<FileSystemResource> downloadFile(@RequestParam(value = "filePath") String filePath) {
+//        filePath = "C:\\Users\\chenming3\\Downloads\\123.xlsx";
 //        String filePath = "D:\\软件\\AdobeXD24.rar";
         File file = new File(filePath);
         HttpHeaders headers = new HttpHeaders();
@@ -104,6 +105,7 @@ public class FileController {
         res.setContentType("application/octet-stream");
         res.setHeader("Content-Disposition", "attachment;filename=" + "123.xlsx");
         FileUtil.filedownload(res.getOutputStream(),filePath);
+        res.flushBuffer();
         return "succes dowload";
     }
 }
