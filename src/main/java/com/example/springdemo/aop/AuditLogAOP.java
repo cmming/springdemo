@@ -1,6 +1,7 @@
 package com.example.springdemo.aop;
 
 import com.example.springdemo.annotation.AuditLog;
+import com.example.springdemo.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -67,7 +68,7 @@ public class AuditLogAOP {
             // 处理响应值得动态绑定
 
 
-            log.info("审计日志注解：{}，内容为：{}，响应值为：{}",auditLog.auditItemId(), operationInfo, result);
+            log.info("审计日志注解：{}，内容为：{}，响应值为：{}",auditLog.auditItemId(), operationInfo, JsonUtils.toJson(result));
         }
 
         return result;
