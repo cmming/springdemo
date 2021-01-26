@@ -25,4 +25,10 @@ public class ConfigTest {
     public void testConfig() {
         System.out.println(testConfig.getName());
     }
+
+    @Test
+    public void test1() {
+        Object a = 2;
+        System.out.println();
+    }
 }

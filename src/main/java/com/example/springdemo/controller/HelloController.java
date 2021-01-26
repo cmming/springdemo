@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @RestController
@@ -61,5 +62,14 @@ public class HelloController {
         System.out.println("是否包含?" + data.indexOf("?"));
         System.out.println("是否包含%3F" + data.indexOf("%3F"));
         System.out.println("testSpecialSingle输入参数：" + data);
+    }
+
+    @GetMapping("/testPost")
+    public Object index(@RequestBody final Map<String, Object> cypherObj) {
+        Object cypher = cypherObj.get("cypher");
+        System.out.println(cypher instanceof Integer);
+        System.out.println(cypher instanceof String);
+        System.out.println(cypher instanceof Number);
+        return cypher;
     }
 }

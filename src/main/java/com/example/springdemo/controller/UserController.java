@@ -43,8 +43,10 @@ public class UserController {
     @AuditLog(auditItemId = "user@list", logContent = "'用戶列表信息查詢，页数为：' + #pageNum + '，条数为：' + #pageSize",
             resultContent = "'响应值为' + #ResultVO")
     public ResultVO index(@RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                          @ModelAttribute("test") final String testString, @ModelAttribute("test1") final String testString1) {
         // Pageable pageable
+        System.out.println(testString);
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<User> result = userRepository.findAll(pageable);
         log.info("用户列表信息：{}", JsonUtils.toJson(result));
@@ -65,7 +67,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @Cacheable(value = "userOne", key = "#id")
+//    @Cacheable(value = "userOne", key = "#id")
     @GetMapping("/one")
     public ResultVO get(@RequestParam(value = "id") Integer id) {
         User result = userRepository.findById(id).get();
