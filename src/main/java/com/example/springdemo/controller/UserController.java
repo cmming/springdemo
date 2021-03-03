@@ -1,6 +1,8 @@
 package com.example.springdemo.controller;
 
 import com.example.springdemo.VO.ResultVO;
+import com.example.springdemo.annotation.AuditLog;
+import com.example.springdemo.annotation.DemoUser;
 import com.example.springdemo.dao.User;
 import com.example.springdemo.enums.ResultEnum;
 import com.example.springdemo.form.UpdateUserForm;
@@ -39,9 +41,13 @@ public class UserController {
      */
     // @Cacheable(value = "userPage", key = "#pageSize + #pageNum")
     @GetMapping("")
+    @AuditLog(auditItemId = "user@list", logContent = "'用戶列表信息查詢，页数为：' + #pageNum + '，条数为：' + #pageSize",
+            resultContent = "'响应值为' + #ResultVO")
     public ResultVO index(@RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                          @ModelAttribute("test") final String testString, @ModelAttribute("test1") final String testString1) {
         // Pageable pageable
+        System.out.println(testString);
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
         Page<User> result = userRepository.findAll(pageable);
         log.info("用户列表信息：{}", JsonUtils.toJson(result));
@@ -49,6 +55,7 @@ public class UserController {
     }
 
     @PostMapping("")
+    @AuditLog(auditItemId = "user@store", logContent = "'请求的参数信息为：' + #userForm")
     public ResultVO store(@Valid @RequestBody UserForm userForm) {
         User user = new User();
         BeanUtils.copyProperties(userForm, user);
@@ -61,7 +68,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @Cacheable(value = "userOne", key = "#id")
+//    @Cacheable(value = "userOne", key = "#id")
     @GetMapping("/one")
     public ResultVO get(@RequestParam(value = "id") Integer id) {
         User result = userRepository.findById(id).get();
@@ -92,5 +99,11 @@ public class UserController {
         BeanUtils.copyProperties(user, oldUser, "id", "status");
         userRepository.save(oldUser);
         return  ResultVOUtil.success(oldUser);
+    }
+
+    @GetMapping("/oneTest")
+    public ResultVO oneTest1(@DemoUser User user) {
+        User result = user;
+        return  ResultVOUtil.success(result);
     }
 }

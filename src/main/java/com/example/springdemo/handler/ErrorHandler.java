@@ -1,8 +1,10 @@
-package com.example.springdemo.utils;
+package com.example.springdemo.handler;
 
 import com.example.springdemo.VO.ResultVO;
 import com.example.springdemo.enums.ResultEnum;
 import com.example.springdemo.exception.DemoException;
+import com.example.springdemo.utils.MiscUtil;
+import com.example.springdemo.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,6 +80,23 @@ public class ErrorHandler {
     public ResponseEntity<ResultVO> demoException(HttpServletRequest req, DemoException e) throws Exception {
         log.info("自定义异常demoException，code:{},msg:{}", e.getCode(), e.getMsg());
         ResultVO res = ResultVOUtil.error(e.getCode(), e.getMsg());
+        return new ResponseEntity(res, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * 统一捕获IllegalArgumentException异常 .
+     * @param req 请求
+     * @param e 异常
+     * @return 错误消息
+     */
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public ResponseEntity<ResultVO> illegalArgumentException(HttpServletRequest req, IllegalArgumentException e) throws Exception {
+        ResultVO res = null;
+        if (e.getMessage() == null || e.getMessage() == "null") {
+            res = ResultVOUtil.error(ResultEnum.PARAMS_ERROR);
+        } else {
+            res = ResultVOUtil.error(ResultEnum.PARAMS_ERROR.getCode(),e.getMessage());
+        }
         return new ResponseEntity(res, HttpStatus.BAD_REQUEST);
     }
 }

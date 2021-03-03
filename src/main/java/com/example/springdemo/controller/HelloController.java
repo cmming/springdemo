@@ -9,6 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 @RestController
 @RequestMapping(value = "/hello")
 public class HelloController {
@@ -42,5 +47,29 @@ public class HelloController {
     public ResultVO testDemoException() {
         DemoException demoException = new DemoException(ResultEnum.NOT_FOUND.getCode(), ResultEnum.NOT_FOUND.getMessage());
         throw demoException;
+    }
+
+    @GetMapping("/testSpecialSingle")
+    public void testSpecialSingle(@RequestParam(value = "data") String  data) {
+        // 测试是否包含 问号 .*(飞机票|船票|汽车票|出租车票|火车票).*
+//        boolean isContainSpecialSingle = Pattern.matches(".*(飞机票|船票).*", data);
+        try {
+            data = URLEncoder.encode(data, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("是否包含？" + data.indexOf("？"));
+        System.out.println("是否包含?" + data.indexOf("?"));
+        System.out.println("是否包含%3F" + data.indexOf("%3F"));
+        System.out.println("testSpecialSingle输入参数：" + data);
+    }
+
+    @GetMapping("/testPost")
+    public Object index(@RequestBody final Map<String, Object> cypherObj) {
+        Object cypher = cypherObj.get("cypher");
+        System.out.println(cypher instanceof Integer);
+        System.out.println(cypher instanceof String);
+        System.out.println(cypher instanceof Number);
+        return cypher;
     }
 }
