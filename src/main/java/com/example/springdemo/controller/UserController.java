@@ -2,6 +2,7 @@ package com.example.springdemo.controller;
 
 import com.example.springdemo.VO.ResultVO;
 import com.example.springdemo.annotation.AuditLog;
+import com.example.springdemo.annotation.DemoUser;
 import com.example.springdemo.dao.User;
 import com.example.springdemo.enums.ResultEnum;
 import com.example.springdemo.form.UpdateUserForm;
@@ -98,5 +99,11 @@ public class UserController {
         BeanUtils.copyProperties(user, oldUser, "id", "status");
         userRepository.save(oldUser);
         return  ResultVOUtil.success(oldUser);
+    }
+
+    @GetMapping("/oneTest")
+    public ResultVO oneTest1(@DemoUser User user) {
+        User result = user;
+        return  ResultVOUtil.success(result);
     }
 }

@@ -91,7 +91,12 @@ public class ErrorHandler {
      */
     @ExceptionHandler(value = IllegalArgumentException.class)
     public ResponseEntity<ResultVO> illegalArgumentException(HttpServletRequest req, IllegalArgumentException e) throws Exception {
-        ResultVO res = ResultVOUtil.error(ResultEnum.PARAMS_ERROR.getCode(),e.getMessage());
+        ResultVO res = null;
+        if (e.getMessage() == null || e.getMessage() == "null") {
+            res = ResultVOUtil.error(ResultEnum.PARAMS_ERROR);
+        } else {
+            res = ResultVOUtil.error(ResultEnum.PARAMS_ERROR.getCode(),e.getMessage());
+        }
         return new ResponseEntity(res, HttpStatus.BAD_REQUEST);
     }
 }
