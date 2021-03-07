@@ -22,6 +22,7 @@ public enum ResultEnum {
     PARAMS_CONTAIN_SPECIAL_SINGLE(422001, "参数包含特殊字符"),
     // 422002
     PARAMS_ERROR(422002, "请求参数异常"),
+    DOCX_TYPE_ERROR(422003, "docx文档格式错误"),
 
     // 服务器异常已500 开头
     SERVER_ERR0R(500000, "服务器异常"),

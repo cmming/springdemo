@@ -13,6 +13,7 @@ import com.example.springdemo.enums.ResultEnum;
 import com.example.springdemo.exception.DemoException;
 import com.example.springdemo.repository.UserRepository;
 import com.example.springdemo.utils.JavaCsvUtil;
+import com.example.springdemo.utils.WordToHtml;
 import net.sf.json.JSONObject;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -27,10 +28,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -57,7 +60,7 @@ public class ExcelController {
     public List<JSONObject> getData() {
         final List<JSONObject> result = new ArrayList<>();
         CsvReader reader = CsvUtil.getReader();
-        CsvData data = reader.read(FileUtil.file("F:\\java\\springdemo\\src\\main\\resources\\templates\\rulefunctions.csv"));
+        CsvData data = reader.read(FileUtil.file("F:/java/springdemo/src/main/resources/templates/rulefunctions.csv"));
         // 读取所有的行
         List<CsvRow> rows = data.getRows();
         // 获取第一行
@@ -75,46 +78,46 @@ public class ExcelController {
 
     @GetMapping("getDataByJavaCsvUtil")
     public List<Map<String, String>> getDataByJavaCsvUtil() {
-        final List<Map<String, String>> result = JavaCsvUtil.readCsv("F:\\java\\springdemo\\src\\main\\resources\\templates\\rulefunctions.csv");
+        final List<Map<String, String>> result = JavaCsvUtil.readCsv("F:/java/springdemo/src/main/resources/templates/rulefunctions.csv");
         return result;
     }
 
-    @GetMapping("getExcelData")
-    public List<Map<String, String>> getExcelData(){
-        final List<Map<String, String>> result = new ArrayList<>();
-        final String filePath = "F:\\java\\springdemo\\src\\main\\resources\\templates\\城市.xlsx";
-        final File file = new File(filePath);
-        if (!file.exists()) {
-            throw new DemoException(ResultEnum.FILE_NOT_FOUND);
-        }
-        Sheet sheet = null;
-        // 同时支持Excel 2003、2007
-        try {
-            FileInputStream fileInputStream = new FileInputStream(file);
-            Workbook workBook = WorkbookFactory.create(fileInputStream);
-            sheet = workBook.getSheetAt(0);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Row headerRow = sheet.getRow(0);
-        int rowNum = sheet.getPhysicalNumberOfRows();
-        for (int i = 1; i < rowNum; i++) {
-            Row row = sheet.getRow(i);
-            int cellNum = headerRow.getPhysicalNumberOfCells();
-            final Map<String, String> rowMap = new HashMap<>();
-            for (int j = 0; j <cellNum; j++) {
-                // 有可能存在某一行没有某一列的的数据
-                if (sheet.getRow(i).getCell(j) != null)
-                {
-                    rowMap.put(headerRow.getCell(j).getStringCellValue(), sheet.getRow(i).getCell(j).getStringCellValue());
-                }
-            }
-            result.add(rowMap);
-        }
-        return result;
-    }
+//    @GetMapping("getExcelData")
+//    public List<Map<String, String>> getExcelData(){
+//        final List<Map<String, String>> result = new ArrayList<>();
+//        final String filePath = "F:/java/springdemo/src/main/resources/templates/城市.xlsx";
+//        final File file = new File(filePath);
+//        if (!file.exists()) {
+//            throw new DemoException(ResultEnum.FILE_NOT_FOUND);
+//        }
+//        Sheet sheet = null;
+//        // 同时支持Excel 2003、2007
+//        try {
+//            FileInputStream fileInputStream = new FileInputStream(file);
+//            Workbook workBook = WorkbookFactory.create(fileInputStream);
+//            sheet = workBook.getSheetAt(0);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Row headerRow = sheet.getRow(0);
+//        int rowNum = sheet.getPhysicalNumberOfRows();
+//        for (int i = 1; i < rowNum; i++) {
+//            Row row = sheet.getRow(i);
+//            int cellNum = headerRow.getPhysicalNumberOfCells();
+//            final Map<String, String> rowMap = new HashMap<>();
+//            for (int j = 0; j <cellNum; j++) {
+//                // 有可能存在某一行没有某一列的的数据
+//                if (sheet.getRow(i).getCell(j) != null)
+//                {
+//                    rowMap.put(headerRow.getCell(j).getStringCellValue(), sheet.getRow(i).getCell(j).getStringCellValue());
+//                }
+//            }
+//            result.add(rowMap);
+//        }
+//        return result;
+//    }
 
     @PostMapping("exportExcel")
     public void importExcel(HttpServletResponse response) {
@@ -166,5 +169,42 @@ public class ExcelController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @GetMapping("testword2Html")
+    public void testword2Html() throws Exception {
+
+//        try {
+//            String fileName = "test.doc";
+//            String newfileName = "test.html";
+//            String filePath = "D:/a/static/doc/";
+//            Map<String, Object> request = new HashMap<String, Object>();
+//            request.put("name", fileName);
+//            request.put("filePath", filePath);
+//            InputStream in = new FileInputStream(filePath + fileName);// 读取文件的数据。
+//            InputStream result = WordToHtml.docToHtml(request, in);
+//            WordToHtml.inputStreamToFile(result, filePath + newfileName);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+
+        try {
+            String fileName = "2.docx";
+            String newfileName = "2.html";
+            String filePath = "D:/a/static/docx/";
+            Map<String, Object> request = new HashMap<String, Object>();
+            request.put("name", fileName);
+            request.put("filePath", filePath);
+            InputStream in = new FileInputStream(filePath + fileName);// 读取文件的数据。
+            InputStream result = WordToHtml.docToHtml(request, in);
+            WordToHtml.inputStreamToFile(result, filePath + newfileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+//        String fileName = "2.pdf";
+//        String newfileName = "2.html";
+//        String filePath = "D:/a/static/pdf/";
+//        WordToHtml.pdf2Html(filePath + fileName, filePath + newfileName);
     }
 }

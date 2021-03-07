@@ -1,5 +1,8 @@
-package com.example.springdemo.interceptor;
+package com.example.springdemo.config;
 
+import com.example.springdemo.interceptor.CorsInterceptor;
+import com.example.springdemo.interceptor.LoginInterceptor;
+import com.example.springdemo.interceptor.SpecialSingleInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -11,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @Date: Create in 9:20 2020-10-20
  **/
 @Configuration
-public class InterceptorConfigByImplWebMvcConfigurer implements WebMvcConfigurer {
+public class InterceptorConfig implements WebMvcConfigurer {
 
     @Bean
     public LoginInterceptor loginInterceptor() {
