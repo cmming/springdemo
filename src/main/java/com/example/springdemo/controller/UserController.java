@@ -106,4 +106,10 @@ public class UserController {
         User result = user;
         return  ResultVOUtil.success(result);
     }
+
+    @GetMapping("/testUserConverter")
+    public ResultVO testUserConverter(User user) {
+        User result = user;
+        return  ResultVOUtil.success(result);
+    }
 }

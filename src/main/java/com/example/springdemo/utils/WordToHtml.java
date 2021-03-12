@@ -11,10 +11,7 @@ import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.converter.PicturesManager;
 import org.apache.poi.hwpf.converter.WordToHtmlConverter;
 import org.apache.poi.hwpf.usermodel.PictureType;
-import org.apache.poi.xwpf.converter.core.BasicURIResolver;
-import org.apache.poi.xwpf.converter.core.FileImageExtractor;
 import org.apache.poi.xwpf.converter.xhtml.XHTMLConverter;
-import org.apache.poi.xwpf.converter.xhtml.XHTMLOptions;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFPictureData;
 import org.fit.pdfdom.PDFDomTree;
@@ -32,19 +29,14 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.List;
 import java.util.Map;
@@ -110,8 +102,6 @@ public class WordToHtml {
         return in;
     }
 
-
-
     public static InputStream docxToHtml(InputStream in, String filePath) {
         XWPFDocument document = null;
         try {
@@ -163,7 +153,6 @@ public class WordToHtml {
         }
         return doc.toString();
     }
-
 
     public static void inputStreamToFile(InputStream inputStream, String newPath) {
         OutputStream outputStream = null;

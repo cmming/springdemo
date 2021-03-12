@@ -23,6 +23,7 @@ public enum ResultEnum {
     // 422002
     PARAMS_ERROR(422002, "请求参数异常"),
     DOCX_TYPE_ERROR(422003, "docx文档格式错误"),
+    PARAMS_TYPE_ERROR(422004, "参数类型错误"),
 
     // 服务器异常已500 开头
     SERVER_ERR0R(500000, "服务器异常"),

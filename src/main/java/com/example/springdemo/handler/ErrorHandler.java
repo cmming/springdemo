@@ -6,6 +6,7 @@ import com.example.springdemo.exception.DemoException;
 import com.example.springdemo.utils.MiscUtil;
 import com.example.springdemo.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -96,6 +97,16 @@ public class ErrorHandler {
             res = ResultVOUtil.error(ResultEnum.PARAMS_ERROR);
         } else {
             res = ResultVOUtil.error(ResultEnum.PARAMS_ERROR.getCode(),e.getMessage());
+        }
+        return new ResponseEntity(res, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = TypeMismatchException.class)
+    public ResponseEntity<ResultVO> typeMismatchException(HttpServletRequest req, TypeMismatchException e) {
+        ResultVO res = null;
+        res = ResultVOUtil.error(ResultEnum.PARAMS_TYPE_ERROR);
+        if (e.getMessage() != null && e.getMessage() != "null") {
+            res.setData(e.getMessage());
         }
         return new ResponseEntity(res, HttpStatus.BAD_REQUEST);
     }
